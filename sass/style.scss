@@ -1,14 +1,154 @@
+// 1) variabili  SCSS
+$main-font: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+$main-color: rgb(230, 0, 255);
+$danger-color: rgb(255, 30, 0);
+$warning-color: rgb(255, 225, 0);
+$success-color: rgb(4, 255, 0);
+
+// 2) NESTING - Selettori annidati (o nidificati)
 body {
   margin: 0;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-family: $main-font;
 }
-// main section h1 {
+
+// selettori vuoti non verranno compilati nella versione finale
+// section {
 // }
 
 main {
+  padding-inline: 3rem;
   section {
+    //parent selector ==> &
+
     h1 {
-      color: red;
+      color: $main-color;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: lightgreen;
+      }
+    }
+
+    div {
+      // &:nth-of-type(2) {
+      // }
+      // &:nth-of-type(3) {
+      // }
+      // &:nth-of-type(4) {
+      // }
+
+      ul {
+        li {
+          color: blue;
+
+          //parent selector ==> &
+          &::marker {
+            content: "🤩🥶";
+          }
+        }
+      }
     }
   }
+}
+
+.btn {
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  color: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+
+  // 3) Parent Selector (&) - permette di riferirsi al genitore in questo contesto, senza ripetere il suo nome più volte
+  &-primary {
+    // background-color: lighten($main-color, 30%);
+    background-color: scale-color($main-color, $lightness: 50%);
+    border-color: $main-color;
+    color: scale-color($main-color, $lightness: -60%);
+  }
+  &-success {
+    background-color: scale-color($success-color, $lightness: 50%);
+    border-color: $success-color;
+    color: scale-color($success-color, $lightness: -60%);
+  }
+  &-warning {
+    background-color: scale-color($warning-color, $lightness: 50%);
+    border-color: $warning-color;
+    color: scale-color($warning-color, $lightness: -60%);
+  }
+  &-danger {
+    background-color: scale-color($danger-color, $lightness: 50%);
+    border-color: $danger-color;
+    color: scale-color($danger-color, $lightness: -60%);
+  }
+
+  // media queries annidate nel selettore
+  @media screen and (min-width: 768px) {
+    padding: 0.5rem 1.5rem;
+  }
+  @media screen and (min-width: 992px) {
+    padding: 1rem 3rem;
+  }
+}
+
+// questo si compilerà in questo modo:
+// main section h1 {
+// }
+
+// 4) EXTEND (@extend) - è in grado di riprendere tutto un blocco precedente di una classe / id / elemento
+
+.btn-alt {
+  @extend .btn;
+
+  padding: 1rem;
+  border-width: 2px;
+  border-radius: 10px;
+  background-color: palegoldenrod;
+  border-color: rgb(168, 154, 0);
+  color: rgb(33, 31, 1);
+}
+
+// 5) PLACEHOLDER (%)- serve ad incorporare un blocco CSS che rispetto ad estendere da selettori esistenti, questo non esisterà di per sé
+// ci permette di dichiarare dei blocchi di regole css e richiamarli all'occorrenza in selettori che verranno poi generati nel css finale
+
+%reset-btn {
+  border: none;
+  background-color: transparent;
+  color: inherit;
+}
+
+%reset-font {
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+}
+
+.btn-basic {
+  @extend %reset-btn, %reset-font;
+}
+
+// 6) MIXINS - un blocco di codice CSS che può generarsi anche con valori (o parametri) dinamici
+
+@mixin myBox($mainColor, $borderColor, $textColor, $radius) {
+  width: 200px;
+  height: 200px;
+  margin-block: 2rem;
+  display: inline-block;
+  vertical-align: bottom;
+  border-radius: $radius;
+  border: 2px solid $borderColor;
+  color: $textColor;
+  background-color: $mainColor;
+  box-shadow: 0 3px 30px scale-color($mainColor, $blackness: 30%);
+}
+
+.box-1 {
+  @include myBox(darkblue, darkcyan, paleturquoise, 10px);
+}
+.box-2 {
+  @include myBox(crimson, coral, palegoldenrod, 30px);
+}
+.box-3 {
+  @include myBox(darkkhaki, khaki, darkgoldenrod, 5px);
 }
