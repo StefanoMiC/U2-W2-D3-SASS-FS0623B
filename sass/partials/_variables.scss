@@ -1,8 +1,0 @@
-// la keword !default definisce un valore iniziale che verrà applicato solo nel caso in cui non esista una definizione precedente
-// se definiamo un $color-primary prima dell'import di questo file, il $color-primary qui di seguito non applicherà il suo valore
-
-$main-font: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif !default;
-$main-color: rgb(230, 0, 255) !default;
-$danger-color: rgb(255, 30, 0) !default;
-$warning-color: rgb(255, 225, 0) !default;
-$success-color: rgb(4, 255, 0) !default;

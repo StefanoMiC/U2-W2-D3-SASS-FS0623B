@@ -1,11 +1,152 @@
 // 1) variabili  SCSS
+
+// la keword !default definisce un valore iniziale che verrà applicato solo nel caso in cui non esista una definizione precedente
+// se definiamo un $color-primary prima dell'import di questo file, il $color-primary qui di seguito non applicherà il suo valore
+$main-font: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif !default;
+$main-color: rgb(230, 0, 255) !default;
+$danger-color: rgb(255, 30, 0) !default;
+$warning-color: rgb(255, 225, 0) !default;
+$success-color: rgb(4, 255, 0) !default;
+
 // 2) NESTING - Selettori annidati (o nidificati)
-@import "./partials/variables";
-@import "./partials/body";
-@import "./partials/main";
+body {
+  margin: 0;
+
+  // creazione di proprietà composte
+  font: {
+    family: $main-font;
+    weight: 400;
+    size: 1rem;
+    style: normal;
+  }
+}
+// selettori vuoti non verranno compilati nella versione finale
+// section {
+// }
+
+// mentre errori, impediscono la ri-generazione del foglio css compilato (il browser non riceverà le ultime modifiche, fino alla risoluzione degli errori)
+// div } - o qualsiasi altro tipo di errore di sintassi.
+
+// da questo momento potreste usare una struttura annidata per lavorare in maniera più efficente e controllata
+main {
+  padding-inline: 3rem;
+  section {
+    //parent selector ==> &
+
+    h1 {
+      color: $main-color;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: lightgreen;
+      }
+    }
+
+    div {
+      // &:nth-of-type(2) {
+      // }
+      // &:nth-of-type(3) {
+      // }
+      // &:nth-of-type(4) {
+      // }
+
+      ul {
+        li {
+          color: blue;
+
+          //parent selector ==> &
+          &::marker {
+            content: "🤩🥶";
+          }
+        }
+      }
+    }
+  }
+}
+// questo si compilerà in questo modo:
+// main section h1 {
+// }
+
 // 3) Parent Selector (&) - permette di riferirsi al genitore in questo contesto, senza ripetere il suo nome più volte
-@import "./partials/buttons";
-@import "./partials/mixins";
+.btn {
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  color: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+
+  // 3) Parent Selector (&) - permette di riferirsi al genitore in questo contesto, senza ripetere il suo nome più volte
+  &-primary {
+    // background-color: lighten($main-color, 30%);
+    background-color: scale-color($main-color, $lightness: 50%);
+    border-color: $main-color;
+    color: scale-color($main-color, $lightness: -60%);
+  }
+  &-success {
+    background-color: scale-color($success-color, $lightness: 50%);
+    border-color: $success-color;
+    color: scale-color($success-color, $lightness: -60%);
+  }
+  &-warning {
+    background-color: scale-color($warning-color, $lightness: 50%);
+    border-color: $warning-color;
+    color: scale-color($warning-color, $lightness: -60%);
+  }
+  &-danger {
+    background-color: scale-color($danger-color, $lightness: 50%);
+    border-color: $danger-color;
+    color: scale-color($danger-color, $lightness: -60%);
+  }
+
+  // media queries annidate nel selettore
+  @media screen and (min-width: 768px) {
+    padding: 0.5rem 1.5rem;
+  }
+  @media screen and (min-width: 992px) {
+    padding: 1rem 3rem;
+  }
+}
+
+@mixin myBox($mainColor: lightgray, $borderColor: gray, $textColor: black, $radius: 10px) {
+  // parametro: defaultValue
+  // un parametro senza default dovrà ricevere per forza un valore, altrimenti SASS darà un errore di compilazione
+  // quando un parametro specifica un default si può omettere di passargli un valore. lui acquisirà il valore specificato come default in quel caso
+  width: 200px;
+  height: 200px;
+  margin-block: 2rem;
+  display: inline-block;
+  vertical-align: bottom;
+  border-radius: $radius;
+  border: 2px solid $borderColor;
+  color: $textColor;
+  background-color: $mainColor;
+  box-shadow: 0 3px 30px scale-color($mainColor, $blackness: 30%);
+}
+
+@mixin dynamicSquare($size, $val, $propertyName) {
+  width: $size;
+  height: $size;
+  margin-block: 2rem;
+  vertical-align: bottom;
+
+  border: 2px solid lightcoral;
+  color: black;
+  // interpolazione di valore #{}
+  // in JS l'interpolazione di stringa si faceva con: `${nomeVar} più altre cose...`
+  background-#{$propertyName}: $val;
+
+  @if ($propertyName == "image") {
+    display: inline-block;
+    background-size: cover;
+    background-repeat: no-repeat;
+  } @else {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 
 // 4) EXTEND (@extend) - è in grado di riprendere tutto un blocco precedente di una classe / id / elemento
 .btn-alt {
