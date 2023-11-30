@@ -2,6 +2,10 @@
 // section {
 // }
 
+// mentre errori, impediscono la ri-generazione del foglio css compilato (il browser non riceverà le ultime modifiche, fino alla risoluzione degli errori)
+// div } - o qualsiasi altro tipo di errore di sintassi.
+
+// da questo momento potreste usare una struttura annidata per lavorare in maniera più efficente e controllata
 main {
   padding-inline: 3rem;
   section {

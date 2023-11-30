@@ -20,7 +20,9 @@
 }
 
 // 5) PLACEHOLDER (%)- serve ad incorporare un blocco CSS che rispetto ad estendere da selettori esistenti, questo non esisterà di per sé
-// ci permette di dichiarare dei blocchi di regole css e richiamarli all'occorrenza in selettori che verranno poi generati nel css finale
+// ci permette di dichiarare dei blocchi di regole css e richiamarli all'occorrenza in selettori che verranno poi generati nel css finale.
+
+// il blocco del placeholder da solo "non esiste"
 
 %reset-btn {
   border: none;
@@ -92,6 +94,7 @@
 // datatype List
 $colorKeys: red, green, blue, yellow, purple, orange;
 
+// la variabile $elem acquisirà come valore uno dei colori della lista, uno dopo l'altro
 @each $elem in $colorKeys {
   .square-#{$elem} {
     background-color: $elem;
@@ -109,13 +112,18 @@ $sizes: (
   xxl: 200px
 );
 
+// nel caso delle mappe ci servono due variabili, una per la chiave e una per il valore degli elementi della mappa
+
+// n.b. se usassimo un solo valore chiamato $elem per esempio, saremmo solo in grado di ricevere la chiave e non avremmo accesso al valore
 @each $key, $val in $sizes {
   .padding-#{$key} {
     padding: $val;
 
+    // questo genererà 4 classi con padding-*-inline
     &-inline {
       padding-inline: $val;
     }
+    // questo genererà 4 classi con padding-*-block
     &-block {
       padding-block: $val;
     }
